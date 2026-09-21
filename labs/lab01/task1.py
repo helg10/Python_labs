@@ -9,8 +9,6 @@ from rich.table import Table
 from rich.text import Text
 from shared.student import GROUP_NAME, STUDENT_NAME, VARIANT_NUMBER
 
-# Віхдній дані мого варіанту
-
 
 # Головна програма
 def main():
