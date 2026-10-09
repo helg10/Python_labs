@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 BASE_DIR = Path(__file__).resolve().parent
 
 DEFAULT_LOG_PATH = BASE_DIR / "data" / "data_v12" / "mail_headers.log"
-DEFAULT_KEYWORD_PATH = BASE_DIR / "data" / "data_v12" /"suspicious_keywords.txt"
+DEFAULT_KEYWORD_PATH = BASE_DIR / "data" / "data_v12" / "suspicious_keywords.txt"
 DEFAULT_OUT_CSV = BASE_DIR / "reports" / "phishing_report.csv"
 
 # Регулярний вираз для пошуку e-mail домену
@@ -185,7 +185,9 @@ def analyze_email_header(
 
         if found_kw:
             score += ThreatScore.SUSPICIOUS_KEYWORD_MATCH * len(found_kw)
-            anomalies.append(f"Suspicious subject keywords found: {', '.join(found_kw)}")
+            anomalies.append(
+                f"Suspicious subject keywords found: {', '.join(found_kw)}"
+            )
             logger.debug(f"[{msg_id}] Знайдено стоп-слова в Subject: {found_kw}")
 
     # 3. Перевірка кількості hops
@@ -350,4 +352,6 @@ if __name__ == "__main__":
         generate_csv_report(analysis_results, args.out_csv)
 
     except Exception as err:
-        logger.critical(f"Критична помилка виконання скрипта: {err}", exc_info=args.debug)
+        logger.critical(
+            f"Критична помилка виконання скрипта: {err}", exc_info=args.debug
+        )

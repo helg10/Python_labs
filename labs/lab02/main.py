@@ -11,7 +11,7 @@ from .task1 import *
 # повинна виконуватися при імпорті task1.py .
 def demo():
     print("Сценарій демонстрації".center(50, "~"))
-    usr = User("helgi","e_X2ample@gmail.com", "devops")
+    usr = User("helgi", "e_X2ample@gmail.com", "devops")
 
     print("\n\nПеревірки  при заданні та перевірці паролю")
     try:
@@ -23,16 +23,15 @@ def demo():
         usr.set_password("qwerty")
     except PasswordNone as p:
         print(f"Програма впала б:{p}")
-    # Правильна ініціалізація паролю 
+    # Правильна ініціалізація паролю
     usr.set_password("enough?!")
-
 
     usr_acc = UserAccount(usr)
     print("\n\nВдалий та невдалий вхід")
     # Невдалий вхід
-    print(f"Автентифіковано?: {usr_acc.login("helgi", "enough?", "127.0.0.0")}")
+    print(f"Автентифіковано?: {usr_acc.login('helgi', 'enough?', '127.0.0.0')}")
     # Вдалий вхід
-    print(f"Автентифіковано?: {usr_acc.login("helgi", "enough?!", "127.0.0.0")}")
+    print(f"Автентифіковано?: {usr_acc.login('helgi', 'enough?!', '127.0.0.0')}")
     usr_acc.journal.show_all()
 
     # Введення емейлу неправильного формату
@@ -44,7 +43,7 @@ def demo():
     except ValueError as v:
         print(f"Валідацію email не пройдено: {v}")
     # Введення правильного емейлу
-    usr_acc["email"] = "helgi01@edu.lpnu.ua" 
+    usr_acc["email"] = "helgi01@edu.lpnu.ua"
     print(usr_acc["email"])
     # Admin
     admin = Admin("admin", "admin@gmail.com", "sysadmin", ("database", "modify"))
@@ -68,15 +67,16 @@ def demo():
 def main():
     parser = argparse.ArgumentParser(description="Програма-демонстрація")
 
-    subparsers = parser.add_subparsers(dest="command", 
-                required=True, help="Доступні команди")
+    subparsers = parser.add_subparsers(
+        dest="command", required=True, help="Доступні команди"
+    )
 
-    demo_parser = subparsers.add_parser("demo", 
-                help="Запустити демонтстрацію")
-    
+    demo_parser = subparsers.add_parser("demo", help="Запустити демонтстрацію")
+
     demo_parser.set_defaults(func=demo)
     args = parser.parse_args()
     args.func()
+
 
 if __name__ == "__main__":
     main()
