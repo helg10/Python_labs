@@ -23,6 +23,9 @@ def main():
         "monitor",
         "Log@An4lysis",
         "watcher",
+        "abvkhAfwe!",
+        "234bkbhkd",
+        "A3d!"
     ]
     criteria = {
         "min_length": 9,

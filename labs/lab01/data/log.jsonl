@@ -1,0 +1,8 @@
+{"event": "login", "user": "Linus", "result": "success", "timestamp": "2026-09-24 09:24:24", "args": ["Linus", "#!jln@#fK$"], "kwargs": {}}
+{"event": "login", "user": "admin", "result": "failure", "timestamp": "2026-09-24 09:24:24", "args": ["admin", "wrong_pass"], "kwargs": {}}
+{"event": "login", "user": "Linus", "result": "success", "timestamp": "2026-09-24 09:25:38", "args": ["Linus", "#!jln@#fK$"], "kwargs": {}}
+{"event": "login", "user": "admin", "result": "failure", "timestamp": "2026-09-24 09:25:38", "args": ["admin", "wrong_pass"], "kwargs": {}}
+{"event": "login", "user": "Linus", "result": "success", "timestamp": "2026-09-24 09:41:59", "args": ["Linus", "#!jln@#fK$"], "kwargs": {}}
+{"event": "login", "user": "admin", "result": "failure", "timestamp": "2026-09-24 09:41:59", "args": ["admin", "wrong_pass"], "kwargs": {}}
+{"event": "login", "user": "Linus", "result": "success", "timestamp": "2026-09-25 13:39:32", "args": ["Linus", "#!jln@#fK$"], "kwargs": {}}
+{"event": "login", "user": "admin", "result": "failure", "timestamp": "2026-09-25 13:39:32", "args": ["admin", "wrong_pass"], "kwargs": {}}

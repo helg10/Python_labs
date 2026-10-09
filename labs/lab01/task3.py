@@ -32,6 +32,7 @@ users_to_register = (
     ("cochroach", "bread_crumps"),
     ("ted", "1993teds"),
     ("college", "trustfull_pass"),
+    ("", "GreatSecret")
 )
 
 
@@ -48,18 +49,19 @@ def generate_hash(password: str, salt: str = "00012") -> str:
     return hex_hash
 
 
-def create_user(username, password) -> tuple:
-    try:
-        generated_hash = generate_hash(password, "00012")
-        return (username, generated_hash)
-    
-    except ValueError:
-        print("ValueError: Відсутнє значення переданої змінної password або " \
-        "salt (None). Неможливо згенерувати хеш, користувача не зареєстровано")
+def create_user(username, password) -> tuple | None:
+    if username:
+        try:
+            generated_hash = generate_hash(password, "00012")
+            return (username, generated_hash)
 
-    except ValidationError:
-        print("ValidationError: Атрибут password повинен мати довжину не менше" \
-        " 8 символів. Неможливо згенерувати хеш, користувача не зареєстровано")
+        except ValueError:
+            print("ValueError: Відсутнє значення переданої змінної password або " \
+            "salt (None). Неможливо згенерувати хеш, користувача не зареєстровано")
+
+        except ValidationError:
+            print("ValidationError: Атрибут password повинен мати довжину не менше" \
+            " 8 символів. Неможливо згенерувати хеш, користувача не зареєстровано")
 
 def user_in_csv(file, column_name, searched_username) -> bool:
     file.flush()
@@ -83,7 +85,7 @@ def create_users(users_list) -> None:
             for account in users_list:
                 # Перевірка наявності користувача в системі
                 registered_acc = create_user(*account)
-                if not user_in_csv(db, "username", f"{registered_acc[0]}"):
+                if registered_acc and not user_in_csv(db, "username", f"{registered_acc[0]}"):
                     db.seek(0, 2)
                     db.write(f"\n{registered_acc[0]},{registered_acc[1]}")
     except OSError:
