@@ -1,3 +1,7 @@
+labs/lab03/data/*.sqlite3
+labs/lab03/data/*.sqlite3-*
+labs/lab03/data/*.db
+labs/lab03/data/*.db-*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
