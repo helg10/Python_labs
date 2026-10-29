@@ -5,7 +5,10 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class CategoryCreate(BaseModel):
-    model_config = ConfigDict(str_strip_whitespace=True, extra="forbid",)
+    model_config = ConfigDict(
+        str_strip_whitespace=True,
+        extra="forbid",
+    )
     name: str = Field(min_length=2, max_length=40)
 
 
@@ -14,7 +17,10 @@ class CategoryRead(CategoryCreate):
 
 
 class RecordCreate(BaseModel):
-    model_config = ConfigDict(str_strip_whitespace=True, extra="forbid",)
+    model_config = ConfigDict(
+        str_strip_whitespace=True,
+        extra="forbid",
+    )
     code: str = Field(min_length=3, max_length=40)
     title: str = Field(min_length=3, max_length=120)
     category_id: int = Field(gt=0)

@@ -13,13 +13,15 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
 
-logger = logging.getLogger(__name__) # цим логером можна скористатися в іншій програмі
+logger = logging.getLogger(__name__)  # цим логером можна скористатися в іншій програмі
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("Запуск вебзастосунку uvicorn")
     seed_database()
     yield
+
 
 app = FastAPI(
     title=f"Lab 03 API - {SUBJECT_AREA}",
@@ -31,19 +33,12 @@ app = FastAPI(
 app.include_router(categories.router)
 app.include_router(records.router)
 
+
 @app.get("/ping")
 def ping():
     return {"status": "ok"}
 
+
 @app.get("/student")
 def get_student():
-    return {"student": STUDENT_NAME, 
-            "group": GROUP_NAME, 
-            "variant": VARIANT_NUMBER}
-
-
-
-
-
-        
-    
+    return {"student": STUDENT_NAME, "group": GROUP_NAME, "variant": VARIANT_NUMBER}

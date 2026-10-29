@@ -4,10 +4,11 @@ from pathlib import Path
 
 # Власний виняток та методи для запиту в бд даних
 
+
 class ConnectionFailed(Exception):
     """## Помилка з'єднання
-    Викликається тоді, коли з'єднання не вдале. Не вдалим вважається з'єднання,   
-    в результаті якого отримано помилку sqlite3.Error або ж виконання команди нижче неуспішне:  
+    Викликається тоді, коли з'єднання не вдале. Не вдалим вважається з'єднання,
+    в результаті якого отримано помилку sqlite3.Error або ж виконання команди нижче неуспішне:
     ` PRAGMA foreign_keys = ON `"""
 
 
@@ -20,12 +21,16 @@ def get_connection(db_path: Path) -> sqlite3.Connection:
         return connection
     except sqlite3.Error as e:
         connection.close()
-        raise ConnectionFailed(f"Не вдалося підготувати правильне підключення для роботи з БД: {e}")
+        raise ConnectionFailed(
+            f"Не вдалося підготувати правильне підключення для роботи з БД: {e}"
+        )
+
 
 def get_categories(db_path: Path) -> list[dict]:
     with closing(get_connection(db_path)) as conn:
         cursor = conn.execute("SELECT id, name FROM categories ORDER BY id ASC")
         return [dict(row) for row in cursor.fetchall()]
+
 
 def create_category(db_path: Path, name: str) -> dict:
     with closing(get_connection(db_path)) as conn:
@@ -34,13 +39,15 @@ def create_category(db_path: Path, name: str) -> dict:
             cat_id = cursor.lastrowid
         return {"id": cat_id, "name": name}
 
+
 def delete_category(db_path: Path, category_id: int) -> bool:
     with closing(get_connection(db_path)) as conn:
         with conn:
             cursor = conn.execute("DELETE FROM categories WHERE id = ?", (category_id,))
         return cursor.rowcount > 0
 
-def get_record_by_id(db_path: Path, record_id:int) -> dict | None:
+
+def get_record_by_id(db_path: Path, record_id: int) -> dict | None:
     with closing(get_connection(db_path)) as conn:
         with conn:
             cursor = conn.execute(
@@ -49,16 +56,18 @@ def get_record_by_id(db_path: Path, record_id:int) -> dict | None:
                 FROM records r
                 JOIN categories c ON r.category_id = c.id
                 WHERE r.id = ?
-                """, (record_id,),
+                """,
+                (record_id,),
             )
             row = cursor.fetchone()
         return dict(row) if row else None
+
 
 def get_filtered_records(
     db_path: Path,
     category_id: int | None = None,
     status: str | None = None,
-    min_value: float | None = None, 
+    min_value: float | None = None,
     q: str | None = None,
     limit: int = 20,
     offset: int = 0,
@@ -95,6 +104,7 @@ def get_filtered_records(
             cursor = conn.execute(query, params)
             return [dict(row) for row in cursor.fetchall()]
 
+
 def create_record(db_path: Path, data: dict) -> dict:
     with get_connection(db_path) as conn:
         with conn:
@@ -108,11 +118,12 @@ def create_record(db_path: Path, data: dict) -> dict:
                     data["title"],
                     data["category_id"],
                     data["value"],
-                    data["status"]
+                    data["status"],
                 ),
             )
             record_id = cursor.lastrowid
         return get_record_by_id(db_path, record_id)
+
 
 def update_record(db_path: Path, record_id: int, data: dict) -> dict | None:
     with closing(get_connection(db_path)) as conn:
@@ -130,18 +141,19 @@ def update_record(db_path: Path, record_id: int, data: dict) -> dict | None:
                     data["value"],
                     data["status"],
                     record_id,
-
                 ),
             )
         if cursor.rowcount == 0:
             return None
     return get_record_by_id(db_path, record_id)
 
+
 def delete_record(db_path: Path, record_id: int) -> bool:
     with closing(get_connection(db_path)) as conn:
         with conn:
             cursor = conn.execute("DELETE FROM records WHERE id = ?", (record_id,))
         return cursor.rowcount > 0
+
 
 def create_records_bulk(db_path: Path, records_list: list[dict]) -> list[dict]:
     with closing(get_connection(db_path)) as conn:
@@ -159,7 +171,7 @@ def create_records_bulk(db_path: Path, records_list: list[dict]) -> list[dict]:
                         item["category_id"],
                         item["value"],
                         item["status"],
-                    )
+                    ),
                 )
                 inserted_ids.append(cursor.lastrowid)
 

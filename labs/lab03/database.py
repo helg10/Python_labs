@@ -9,6 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent
 DATABASE_PATH = BASE_DIR / "data" / "lab3.sqlite3"
 SCHEMA_PATH = BASE_DIR / "schema.sql"
 
+
 def get_connection() -> sqlite3.Connection:
     """Відкрити з’єднання з перевіркою зовнішніх ключів."""
     DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -20,6 +21,7 @@ def get_connection() -> sqlite3.Connection:
         logger.exception("Помилка під час налаштування з'єднання з БД")
         connection.close()
         raise
+
 
 def initialize_database() -> None:
     """Створити таблиці за готовим SQL-скриптом."""
@@ -33,6 +35,7 @@ def initialize_database() -> None:
             connection.rollback()
             logger.error("ПОМИЛКА, ЗАВЕРШЕННЯ ПРОГРАМИ")
             raise
+
 
 if __name__ == "__main__":
     initialize_database()

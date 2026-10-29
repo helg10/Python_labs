@@ -11,11 +11,14 @@ SEED_PATH = BASE_DIR / "data" / "seed.json"
 
 logger = logging.getLogger(__name__)
 
+
 def seed_database() -> None:
     initialize_database()
-    
+
     if not SEED_PATH.exists():
-        logger.error(f"Файл seed.json не знайдено: {SEED_PATH}. Нових даних в базу не записано")
+        logger.error(
+            f"Файл seed.json не знайдено: {SEED_PATH}. Нових даних в базу не записано"
+        )
         return
 
     data = json.loads(SEED_PATH.read_text(encoding="utf-8"))
@@ -28,7 +31,9 @@ def seed_database() -> None:
         # Перевірка, чи вже є дані
         cursor = conn.execute("SELECT COUNT(*) FROM categories")
         if cursor.fetchone()[0] > 0:
-            logger.warning("База даних вже містить дані. Повторне заповнення не виконано (дублікатів не створено).")
+            logger.warning(
+                "База даних вже містить дані. Повторне заповнення не виконано (дублікатів не створено)."
+            )
             return
 
         try:
