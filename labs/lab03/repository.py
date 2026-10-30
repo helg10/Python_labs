@@ -68,6 +68,7 @@ def get_filtered_records(
     category_id: int | None = None,
     status: str | None = None,
     min_value: float | None = None,
+    max_value: float | None = None,
     q: str | None = None,
     limit: int = 20,
     offset: int = 0,
@@ -92,6 +93,10 @@ def get_filtered_records(
         if min_value is not None:
             query += " AND r.value >= ?"
             params.append(min_value)
+
+        if max_value is not None:
+            query += " AND r.value <= ?"
+            params.append(max_value)
 
         if q is not None:
             query += " AND instr(r.title, ?) > 0"
@@ -174,12 +179,11 @@ def create_records_bulk(db_path: Path, records_list: list[dict]) -> list[dict]:
                     ),
                 )
                 inserted_ids.append(cursor.lastrowid)
-
         result = []
         for rid in inserted_ids:
             cursor = conn.execute(
                 """
-                SELECT r.id, r.code, t.title, r.category_id, r.value, r.status, c.name, as category_name
+                SELECT r.id, r.code, r.title, r.category_id, r.value, r.status, c.name AS category_name
                 FROM records r
                 JOIN categories c ON r.category_id = c.id
                 WHERE r.id = ?
